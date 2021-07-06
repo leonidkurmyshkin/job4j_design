@@ -62,14 +62,4 @@ public class SimpleArray<T> implements Iterable<T> {
             }
         };
     }
-
-    public static void main(String[] args) {
-        SimpleArray<Integer> numbers = new SimpleArray<>(3);
-        numbers.add(1);
-        numbers.add(2);
-        numbers.add(3);
-        System.out.println(numbers.get(0));
-        var it = numbers.iterator();
-        it.forEachRemaining(System.out::println);
-    }
 }
