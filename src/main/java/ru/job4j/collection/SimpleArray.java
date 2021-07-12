@@ -4,13 +4,11 @@ import java.util.*;
 
 public class SimpleArray<T> implements Iterable<T> {
     private T[] array;
-    private int length;
     private  int size = 0;
     private int modCount = 0;
 
     public SimpleArray(int length) {
         array = (T[]) new Object[length];
-        this.length = length;
     }
 
     public SimpleArray() {
@@ -23,9 +21,8 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        if (size == length) {
-            length += length / 2 + 1;
-            array = Arrays.copyOf(array, length);
+        if (size == array.length) {
+            array = Arrays.copyOf(array, size + size / 2 + 1);
         }
         array[size++] = model;
         modCount++;
