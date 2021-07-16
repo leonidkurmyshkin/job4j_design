@@ -49,7 +49,7 @@ public class SimpleMapTest {
     }
 
     @Test
-    public void whenAddThenRemove() {
+    public void whenPutThenRemove() {
         var map = new SimpleMap<String, Integer>();
         assertTrue(map.put("Жёлтый", 1));
         assertFalse(map.remove("Белый"));

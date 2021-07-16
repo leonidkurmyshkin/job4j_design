@@ -3,6 +3,7 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
     private static final float LOAD_FACTOR = 0.75f;
@@ -16,8 +17,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if ((float) count / capacity >= LOAD_FACTOR) {
             expand();
         }
-        var index = key == null ? 0
-                : indexFor(hash(key.hashCode()));
+        var index = getIndex(key);
         var rsl = table[index] == null;
         if (rsl) {
             table[index] = new MapEntry<>(key, value);
@@ -35,34 +35,39 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return hash & (capacity - 1);
     }
 
+    private int getIndex(K key) {
+        return key == null
+                ? 0
+                : indexFor(hash(key.hashCode()));
+    }
+
     private void expand() {
         capacity *= 2;
         var oldTable = table;
         table = new MapEntry[capacity];
         for (var entry : oldTable) {
             if (entry != null) {
-                var index = entry.key == null ? 0
-                        : indexFor(hash(entry.key.hashCode()));
-                table[index] = entry;
+                table[getIndex(entry.key)] = entry;
             }
         }
     }
 
     @Override
     public V get(K key) {
-        var index = key == null ? 0
-                : indexFor(hash(key.hashCode()));
-        var entry = table[index];
-        return entry == null ? null : entry.value;
+        var entry = table[getIndex(key)];
+        return entry != null && Objects.equals(key, entry.key)
+                ? entry.value
+                : null;
     }
 
     @Override
     public boolean remove(K key) {
-        var index = key == null ? 0
-                : indexFor(hash(key.hashCode()));
-        var rsl = table[index] != null;
+        var index = getIndex(key);
+        var rsl = table[index] != null
+                && Objects.equals(key, table[index].key);
         if (rsl) {
             table[index] = null;
+            count--;
             modCount++;
         }
         return rsl;
