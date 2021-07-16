@@ -82,7 +82,7 @@ public class SimpleMapTest {
     }
 
     @Test(expected = ConcurrentModificationException.class)
-    public void IteratorFailFastBehaviourAfterRemove() {
+    public void iteratorFailFastBehaviourAfterRemove() {
         var map = new SimpleMap<String, Integer>();
         assertTrue(map.put("Жёлтый", 1));
         assertTrue(map.put("Белый", 2));
@@ -94,7 +94,7 @@ public class SimpleMapTest {
     }
 
     @Test(expected = ConcurrentModificationException.class)
-    public void IteratorFailFastBehaviourAfterPut() {
+    public void iteratorFailFastBehaviourAfterPut() {
         var map = new SimpleMap<String, Integer>();
         assertTrue(map.put("Жёлтый", 1));
         assertTrue(map.put("Белый", 2));
