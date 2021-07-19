@@ -55,6 +55,8 @@ public class SimpleMapTest {
         assertFalse(map.remove("Белый"));
         assertTrue(map.remove("Жёлтый"));
         assertNull(map.get("Жёлтый"));
+        var iterator = map.iterator();
+        assertFalse(iterator.hasNext());
     }
 
     @Test
