@@ -12,7 +12,7 @@ public class MultiplicationTable {
                         out.write("\t".getBytes());
                     }
                 }
-                out.write("\n".getBytes());
+                out.write(System.lineSeparator().getBytes());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -20,6 +20,6 @@ public class MultiplicationTable {
     }
 
     public static void main(String[] args) {
-        tableOutToFile(5);
+        tableOutToFile(8);
     }
 }
