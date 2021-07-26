@@ -11,7 +11,7 @@ public class ConfigTest {
         String path = "./data/pair_without_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"),is("Petr Arsentev"));
+        assertThat(config.value("name"), is("Petr Arsentev"));
     }
 
     @Test
