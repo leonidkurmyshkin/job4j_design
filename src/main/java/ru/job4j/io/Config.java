@@ -5,10 +5,12 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.regex.Pattern;
 
 public class Config {
     private final String path;
     private final Map<String, String> values = new HashMap<>();
+    private final static Pattern CORRECT_LINE = Pattern.compile("^[a-z][\\w.]*=[^=]+$");
 
     public Config(final String path) {
         this.path = path;
@@ -18,7 +20,7 @@ public class Config {
         try (var read = new BufferedReader(new FileReader(path))) {
             read.lines()
                     .filter(line -> !line.isEmpty() && !line.startsWith("#"))
-                    .filter(line -> line.matches("^[a-z][\\w.]*=[^=]+$"))
+                    .filter(line -> CORRECT_LINE.matcher(line).matches())
                     .map(line -> line.split("="))
                     .forEach(words -> values.put(words[0], words[1]));
         } catch (Exception e) {
