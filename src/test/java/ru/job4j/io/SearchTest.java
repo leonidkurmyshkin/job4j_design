@@ -5,24 +5,21 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.*;
 
 public class SearchTest {
     @Test
     public void whenLogsFound() throws IOException {
         Path start = Paths.get(".");
-        List<Path> expected = List.of(
-                Paths.get("./data/whenEndingIsUnknown.log"),
-                Paths.get("./data/whenOneRangeUnavailable.log"),
-                Paths.get("./data/whenPermanentAvailable.log"),
-                Paths.get("./data/whenTwoRangeUnavailable.log")
-        );
+        var path4 = Paths.get("./data/whenEndingIsUnknown.log");
+        var path2 = Paths.get("./data/whenOneRangeUnavailable.log");
+        var path3 = Paths.get("./data/whenTwoRangeUnavailable.log");
+        var path1 = Paths.get("./data/whenPermanentAvailable.log");
         var pathsRsl = Search.search(start,
                 p -> p.toString().endsWith(".log"));
-        for (var path : expected) {
-            assertTrue(pathsRsl.contains(path));
-        }
+        assertEquals(pathsRsl.size(), 4);
+        assertThat(pathsRsl, hasItems(path1, path2, path3, path4));
     }
 }
