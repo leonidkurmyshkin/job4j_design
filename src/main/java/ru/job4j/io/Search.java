@@ -16,8 +16,22 @@ public class Search {
     }
 
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        search(start, p -> p.toString().endsWith(".js"))
+        if (args.length < 2) {
+            throw  new IllegalArgumentException(String.format(
+                    "Параметры запуска указаны не полностью. Запускайте так:%n%s",
+                    "java -jar search.jar начальный_каталог расширение_файла"));
+        }
+        final var startFolder = Paths.get(args[0]);
+        final var fileExtension = args[1];
+        if (!startFolder.toFile().exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "Каталог %s не существует", startFolder));
+        }
+        if (!startFolder.toFile().isDirectory()) {
+            throw new IllegalArgumentException(String.format(
+                    "%s - не каталог", startFolder));
+        }
+        search(startFolder, path -> path.toString().endsWith(fileExtension))
                 .forEach(System.out::println);
     }
 }
