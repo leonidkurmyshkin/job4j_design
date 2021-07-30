@@ -8,9 +8,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
-    private final HashMap<FileProperty, List<Path>> filePaths = new HashMap<>();
+    private final Map<FileProperty, List<Path>> filePaths = new HashMap<>();
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -21,7 +22,7 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
         return super.visitFile(file, attrs);
     }
 
-    public HashMap<FileProperty, List<Path>> getFilePaths() {
+    public Map<FileProperty, List<Path>> getFilePaths() {
         return filePaths;
     }
 }
