@@ -1,0 +1,69 @@
+package ru.job4j.io;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
+
+public class ConsoleChat {
+    private final String path;
+    private final String botAnswers;
+    private static final String OUT = "закончить";
+    private static final String STOP = "стоп";
+    private static final String CONTINUE = "продолжить";
+    private List<String> answers = null;
+
+    public ConsoleChat(String path, String botAnswers) {
+        this.path = path;
+        this.botAnswers = botAnswers;
+    }
+
+    public void run() {
+        var rand = new Random();
+        var in = new Scanner(System.in);
+        try (var out = new PrintWriter(
+                new FileWriter(path, Charset.forName("WINDOWS-1251")))) {
+            var botState = CONTINUE;
+            while (!botState.equals(OUT)) {
+                System.out.print("Ваша фраза: ");
+                var question = in.nextLine();
+                out.printf("Пользователь: %s%n", question);
+                switch (question) {
+                    case OUT:
+                        botState = OUT;
+                        break;
+                    case STOP:
+                        botState = STOP;
+                        break;
+                    case CONTINUE:
+                        botState = CONTINUE;
+                        break;
+                    default:
+                }
+                if (botState.equals(CONTINUE)) {
+                    var answer = getBotAnswer(rand);
+                    System.out.printf("Бот: %s%n", answer);
+                    out.printf("Бот: %s%n", answer);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getBotAnswer(Random rand) {
+        if (answers == null) {
+            try (var in = new BufferedReader(new FileReader(botAnswers))) {
+                answers = new ArrayList<>();
+                in.lines().forEach(answers::add);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return answers.get(rand.nextInt(answers.size()));
+    }
+
+    public static void main(String[] args) {
+        ConsoleChat cc = new ConsoleChat("./data/dialog.txt", "./data/bot_answers.txt");
+        cc.run();
+    }
+}
