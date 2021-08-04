@@ -20,31 +20,33 @@ public class ConsoleChat {
     public void run() {
         var rand = new Random();
         var in = new Scanner(System.in);
+        var dialog = new StringBuilder();
+        var botState = CONTINUE;
+        while (!botState.equals(OUT)) {
+            System.out.print("Ваша фраза: ");
+            var question = in.nextLine();
+            dialog.append(String.format("Пользователь: %s%n", question));
+            switch (question) {
+                case OUT:
+                    botState = OUT;
+                    break;
+                case STOP:
+                    botState = STOP;
+                    break;
+                case CONTINUE:
+                    botState = CONTINUE;
+                    break;
+                default:
+            }
+            if (botState.equals(CONTINUE)) {
+                var answer = getBotAnswer(rand);
+                System.out.printf("Бот: %s%n", answer);
+                dialog.append(String.format("Бот: %s%n", answer));
+            }
+        }
         try (var out = new PrintWriter(
                 new FileWriter(path, Charset.forName("WINDOWS-1251")))) {
-            var botState = CONTINUE;
-            while (!botState.equals(OUT)) {
-                System.out.print("Ваша фраза: ");
-                var question = in.nextLine();
-                out.printf("Пользователь: %s%n", question);
-                switch (question) {
-                    case OUT:
-                        botState = OUT;
-                        break;
-                    case STOP:
-                        botState = STOP;
-                        break;
-                    case CONTINUE:
-                        botState = CONTINUE;
-                        break;
-                    default:
-                }
-                if (botState.equals(CONTINUE)) {
-                    var answer = getBotAnswer(rand);
-                    System.out.printf("Бот: %s%n", answer);
-                    out.printf("Бот: %s%n", answer);
-                }
-            }
+            out.append(dialog);
         } catch (Exception e) {
             e.printStackTrace();
         }
