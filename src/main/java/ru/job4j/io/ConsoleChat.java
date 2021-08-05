@@ -10,6 +10,7 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
+    private String botState = CONTINUE;
     private List<String> answers = null;
 
     public ConsoleChat(String path, String botAnswers) {
@@ -21,29 +22,36 @@ public class ConsoleChat {
         var rand = new Random();
         var in = new Scanner(System.in);
         var dialog = new StringBuilder();
-        var botState = CONTINUE;
         while (!botState.equals(OUT)) {
             System.out.print("Ваша фраза: ");
             var question = in.nextLine();
             dialog.append(String.format("Пользователь: %s%n", question));
-            switch (question) {
-                case OUT:
-                    botState = OUT;
-                    break;
-                case STOP:
-                    botState = STOP;
-                    break;
-                case CONTINUE:
-                    botState = CONTINUE;
-                    break;
-                default:
-            }
+            changeBotState(question);
             if (botState.equals(CONTINUE)) {
                 var answer = getBotAnswer(rand);
                 System.out.printf("Бот: %s%n", answer);
                 dialog.append(String.format("Бот: %s%n", answer));
             }
         }
+        writeToLog(dialog.toString());
+    }
+
+    private void changeBotState(String question) {
+        switch (question) {
+            case OUT:
+                botState = OUT;
+                break;
+            case STOP:
+                botState = STOP;
+                break;
+            case CONTINUE:
+                botState = CONTINUE;
+                break;
+            default:
+        }
+    }
+
+    private void writeToLog(String dialog) {
         try (var out = new PrintWriter(
                 new FileWriter(path, Charset.forName("WINDOWS-1251")))) {
             out.append(dialog);
@@ -54,7 +62,8 @@ public class ConsoleChat {
 
     private String getBotAnswer(Random rand) {
         if (answers == null) {
-            try (var in = new BufferedReader(new FileReader(botAnswers))) {
+            try (var in = new BufferedReader(
+                    new FileReader(botAnswers, Charset.forName("WINDOWS-1251")))) {
                 answers = new ArrayList<>();
                 in.lines().forEach(answers::add);
             } catch (Exception e) {
