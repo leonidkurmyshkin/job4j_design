@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static ru.job4j.io.EchoServer.Request.*;
 
@@ -57,7 +59,12 @@ public class EchoServer {
             }
     }
 
-    public static void main(String[] args) throws IOException {
-        new EchoServer().doJob();
+    public static void main(String[] args) {
+        Logger log = LoggerFactory.getLogger(EchoServer.class.getName());
+        try {
+            new EchoServer().doJob();
+        } catch (IOException e) {
+            log.error("Exception in doJob", e);
+        }
     }
 }
