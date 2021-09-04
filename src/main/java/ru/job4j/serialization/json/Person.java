@@ -39,7 +39,6 @@ public class Person {
         final Gson gson = new GsonBuilder().create();
         String savedPerson = gson.toJson(person);
         System.out.println(savedPerson);
-        person = null;
         person = gson.fromJson(savedPerson, Person.class);
         System.out.println(person);
     }
