@@ -23,10 +23,8 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void createTable(String tableName) throws Exception {
-        executeDDL("""
-                CREATE TABLE IF NOT EXISTS %s (
-                id serial PRIMARY KEY );
-                """.formatted(tableName));
+        executeDDL("CREATE TABLE IF NOT EXISTS %s (id serial PRIMARY KEY);"
+                .formatted(tableName));
     }
 
     public void dropTable(String tableName) throws Exception {
@@ -45,10 +43,8 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
-        executeDDL("""
-                ALTER TABLE IF EXISTS %s
-                RENAME COLUMN %s TO %s;
-                """.formatted(tableName, columnName, newColumnName));
+        executeDDL("ALTER TABLE IF EXISTS %s RENAME COLUMN %s TO %s;"
+                .formatted(tableName, columnName, newColumnName));
     }
 
     private void executeDDL(String command) throws Exception {
