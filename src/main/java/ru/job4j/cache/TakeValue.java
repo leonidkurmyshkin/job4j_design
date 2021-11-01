@@ -13,10 +13,10 @@ public class TakeValue implements Action {
             System.out.printf("Кешируемая директория: %s%n", dirName);
             printAllFileNames(emul);
             var fileName = in.askString("Введите имя файла:");
-            var value = emul.getDirToCache().get(dirName)
-                    .get(fileName);
-            System.out.println(value != null
-                    ? value
+            var cache = emul.getDirToCache().get(dirName);
+            var file = cache.takeFullName(fileName);
+            System.out.println(file.exists() && file.isFile()
+                    ? cache.get(fileName)
                     : "Такой файл ещё не загружался в кэш.");
         }
         return true;

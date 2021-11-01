@@ -9,13 +9,13 @@ public class LoadFile implements Action {
     @Override
     public boolean execute(Input in, Emulator emul) {
         if (!emul.dirNameIsNull()) {
-            DirFileCache dir = emul.getDirToCache().get(emul.getDirName());
-            System.out.printf("Кэшируемая директория: %s%n", dir.getCachingDir());
+            DirFileCache cache = emul.getDirToCache().get(emul.getDirName());
+            System.out.printf("Кэшируемая директория: %s%n", cache.getCachingDir());
             var fileName = in.askString("Введите имя файла:");
-            var file = dir.takeFullName(fileName);
+            var file = cache.takeFullName(fileName);
             if (file.exists() && file.isFile()) {
-                dir.put(fileName, dir.load(fileName));
-                if (dir.cache.containsKey(fileName)) {
+                cache.put(fileName, cache.load(fileName));
+                if (cache.cache.containsKey(fileName)) {
                     System.out.println("Содержимое файла загружено.");
                 }
             } else {

@@ -12,8 +12,10 @@ public abstract class AbstractCache<K, V> {
     }
 
     public V get(K key) {
-        var softVal = cache.get(key);
-        return softVal != null ? softVal.get() : null;
+        if (!cache.containsKey(key)) {
+            put(key, load(key));
+        }
+        return cache.get(key).get();
     }
 
     protected abstract V load(K key);
