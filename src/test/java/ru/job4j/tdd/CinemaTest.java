@@ -23,7 +23,7 @@ public class CinemaTest {
     }
 
     @Ignore
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void whenNoSessionAndBuyWasUnsuccessful() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
@@ -34,7 +34,7 @@ public class CinemaTest {
     }
 
     @Ignore
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void whenPlaceIsBusyAndBuyWasUnsuccessful() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
@@ -47,7 +47,7 @@ public class CinemaTest {
     }
 
     @Ignore
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void whenDateIsOldAndBuyWasUnsuccessful() {
         Account account = new AccountCinema();
         Cinema cinema = new Cinema3D();
