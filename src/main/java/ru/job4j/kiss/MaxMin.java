@@ -6,9 +6,9 @@ import java.util.function.Predicate;
 
 public class MaxMin {
     private <T> T extremum(List<T> values, Comparator<T> comparator, Predicate<Integer> predicate) {
-        T rsl = null;
+        T rsl = values.isEmpty() ? null : values.get(0);
         for (var value : values) {
-            if (rsl == null || predicate.test(comparator.compare(value, rsl))) {
+            if (predicate.test(comparator.compare(value, rsl))) {
                 rsl = value;
             }
         }
